@@ -1,9 +1,12 @@
 #include <stdio.h>
+#include <string.h>
 #define TAM 100
 
 typedef struct {
+    char modelo[TAM];
     int ano;
     int chassi;
+    int potencia;
 }Carro;
 
 int main() {
@@ -26,10 +29,20 @@ int main() {
         switch (escolha){
             case 1:
                 if (numero < TAM) {
+                    printf("Digite o modelo do carro: ");
+                    fgets(carros[numero].modelo, TAM, stdin);
+                    for (int i = 0; carros[numero].modelo[i] != '\0'; i++) {
+                        if (carros[numero].modelo[i] == '\n') {
+                        carros[numero].modelo[i] = '\0'; 
+                        break;
+                        }
+                    }
                     printf("Digite o ano do carro: ");
                     scanf("%d", &carros[numero].ano);
                     printf("Digite o numero do chassi do carro: ");
                     scanf("%d", &carros[numero].chassi);
+                    printf("Digite a potencia do carro (Em cavalos): ");
+                    scanf("%d", &carros[numero].potencia);
                     printf("Carro adicionado.\n\n");
                     numero = numero + 1;
                 }
@@ -44,7 +57,7 @@ int main() {
                 else{
                     printf("Lista de carros: \n");
                     for(int i = 0; i < numero; i++){
-                        printf("Carro %d= Ano: %d, Chassi: %d\n", i, carros[i]. ano, carros[i].chassi);
+                        printf("Carro %d = Modelo: %s, Ano: %d, Chassi: %d, Potencia: %d\n", i, carros[i].modelo, carros[i].ano, carros[i].chassi, carros[i].potencia);
                     }
                     printf("\n");
                 }
@@ -59,6 +72,7 @@ int main() {
                     for(int i = posicao; i < numero - 1; i++){
                     carros[i].ano = carros[i+1].ano;
                     carros[i].chassi = carros[i+1].chassi;
+                    carros[i].potencia = carros[i+1].potencia;
                     }
                     numero = numero - 1;
                     printf("Carro removido.\n\n");
