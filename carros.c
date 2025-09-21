@@ -52,7 +52,7 @@ int main() {
                 break;
             case 2: 
                 if(numero == 0){
-                    printf("Nenhum carro foi adicionado\n");
+                    printf("Nenhum carro foi adicionado\n\n");
                 }
                 else{
                     printf("Lista de carros: \n");
@@ -63,20 +63,29 @@ int main() {
                 }
                 break;
             case 3: 
-                printf("Digite a posicao do carro a ser excluido (De 0 a %d.): ", numero - 1);
-                scanf("%d", &posicao);
-                if (posicao < 0 || posicao >= numero) {
-                    printf("Posição inválida!\n");
+                if (numero == 0) {
+                    printf("Nenhum carro cadastrado para excluir.\n\n");
+                }
+                else if(numero == 1){
+                    numero--;
+                    printf("O unico carro registrado foi excluido.\n\n");
                 }
                 else{
-                    for(int i = posicao; i < numero - 1; i++){
-                    carros[i].ano = carros[i+1].ano;
-                    carros[i].chassi = carros[i+1].chassi;
-                    carros[i].potencia = carros[i+1].potencia;
+                    printf("Digite a posicao do carro a ser excluido (De 0 a %d.): ", numero - 1);
+                    scanf("%d", &posicao);
+                    if (posicao < 0 || posicao >= numero) {
+                        printf("Posição inválida!\n");
                     }
-                    numero = numero - 1;
-                    printf("Carro removido.\n\n");
-                }
+                    else{
+                        for(int i = posicao; i < numero - 1; i++){
+                        carros[i].ano = carros[i+1].ano;
+                        carros[i].chassi = carros[i+1].chassi;
+                        carros[i].potencia = carros[i+1].potencia;
+                        }
+                        numero = numero - 1;
+                        printf("Carro removido.\n\n");
+                    }
+                }   
                 break;
             case 0: 
                 printf("Fim do programa.\n");
