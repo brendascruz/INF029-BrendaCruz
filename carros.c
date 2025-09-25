@@ -24,6 +24,7 @@ int main() {
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &escolha);
+        getchar();
         printf("\n");
 
         switch (escolha){
@@ -78,6 +79,7 @@ int main() {
                     }
                     else{
                         for(int i = posicao; i < numero - 1; i++){
+                        strcpy(carros[i].modelo, carros[i+1].modelo);
                         carros[i].ano = carros[i+1].ano;
                         carros[i].chassi = carros[i+1].chassi;
                         carros[i].potencia = carros[i+1].potencia;
