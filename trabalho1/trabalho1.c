@@ -10,10 +10,10 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questões do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome:
-//  email:
-//  Matrícula:
-//  Semestre:
+//  Nome: Brenda Silva Cruz
+//  Email: brendasilvacruz.ba@gmail.com
+//  Matrícula: 20251160014
+//  Semestre: 2 semestre
 
 //  Copyright © 2016 Renato Novais. All rights reserved.
 // Última atualização: 07/05/2021 - 19/08/2016 - 17/10/2025
@@ -24,7 +24,7 @@
 #include "trabalho1.h" 
 #include <stdlib.h>
 
-DataQuebrada quebraData(char data[]);
+DataQuebrada quebrar(char data[]);
 
 /*
 ## função utilizada para testes  ##
@@ -89,20 +89,116 @@ int teste(int a)
     Não utilizar funções próprias de string (ex: strtok)   
     pode utilizar strlen para pegar o tamanho da string
  */
+
+ /*
+ typedef struct DQ
+{
+    int iDia; 
+    int iMes;
+    int iAno;
+    int valido; // 0 se inválido, e 1 se válido 
+} DataQuebrada;
+
+atoi transforma de string para inteiro
+
+Pegar a data
+Verificar até a barra
+Contar quantidade de numeros
+Se for entre 1 e 2 pegar isso e colocar no iDia
+Pular a barra e ir para o proximo
+Se for entre 1 e 2 pegar isso e colocar no iMes
+Pular a barra e ir para o proximo
+Se for entre 2 e 4 pegar isso e colocar no iAno
+Transformar isso em inteiro
+Verificar se o dia está entre 1 e 31
+Verificar se o mes está entre 1 e 12
+Verificar se o ano está entre 1500 e 2100
+Verificar se a quantidade de dias equivale no mes
+Verificar se o ano é bissexto para ver se funciona em fevereiro (28 dias ou 29 dias)
+Se tudo certo, valido == 1
+Se nao, valido == 0 e break
+ */
+
+DataQuebrada quebrar(char data[]){
+  DataQuebrada d = {0, 0, 0, 1};
+  int i = 0;
+  char iDia[3] = {0}, iMes[3] = {0}, iAno[5] = {0};
+
+  if(data[0] == '/'){ // dia vazio
+        d.valido = 0;
+        return d;
+  }
+
+  for(i = 0; data[i] != '/' && i < 2; i++){
+    iDia[i] = data[i];
+  }
+
+  if(i < 1){
+    d.valido = 0;
+    return d;
+  }
+  iDia[i] = '\0';
+  int j = i + 1;
+  i = 0;
+
+  for(j; data[j] != '/' && i < 2 && data[j] != '\0'; j++){
+    iMes[i] = data[j];
+    i++;
+  }
+  if(i < 1){
+      d.valido = 0;
+      return d;
+  }
+  iMes[i] = '\0';
+  j++;
+  int k = j;
+  i = 0;
+  for(k; data[k] != '\0' && i < 4; k++){
+    iAno[i] = data[k];
+    i++;
+  }
+  if(i != 2 && i!= 4){
+      d.valido = 0;
+      return d;
+  }
+  iAno[i] = '\0';
+
+  d.iDia = atoi(iDia);
+  d.iMes = atoi(iMes);
+  d.iAno = atoi(iAno);
+
+  return d;
+}
+
+
+int ehBissexto(int ano) {
+  if ((ano % 400 == 0) || (ano % 4 == 0 && ano % 100 != 0))
+    return 1;
+  else
+    return 0;
+} 
+
+
 int q1(char data[])
 {
-  int datavalida = 1;
+  DataQuebrada d;
+  d = quebrar(data);
+  int meses[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  
+  if (!d.valido)
+    return 0;
 
-  //quebrar a string data em strings sDia, sMes, sAno
 
+  if(ehBissexto(d.iAno)){
+    meses[1] = 29;
+  }
+  if(d.iMes < 1 || d.iMes > 12) return 0;
 
-  //printf("%s\n", data);
+  if (d.iDia < 1 || d.iDia > meses[d.iMes - 1]) return 0;
 
-  if (datavalida)
-      return 1;
-  else
-      return 0;
+  return 1;
 }
+
 
 
 
@@ -156,12 +252,21 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  @saida
     Um número n >= 0.
  */
+
+ /*
+ no teste: 
+ char str[250];
+  strcpy(str, "Renato Lima Novais");
+  printf("%d\n", q3(str, 'a', 0) == 3);
+ */
 int q3(char *texto, char c, int isCaseSensitive)
 {
     int qtdOcorrencias = -1;
-
+    
     return qtdOcorrencias;
 }
+
+
 
 /*
  Q4 = encontrar palavra em texto
@@ -235,6 +340,8 @@ int q6(int numerobase, int numerobusca)
 
 
 
+
+/*
 DataQuebrada quebraData(char data[]){
   DataQuebrada dq;
   char sDia[3];
@@ -292,3 +399,4 @@ DataQuebrada quebraData(char data[]){
     
   return dq;
 }
+*/
