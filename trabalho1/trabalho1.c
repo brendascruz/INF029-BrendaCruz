@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include "trabalho1.h" 
 #include <stdlib.h>
+#include <string.h>
 
 DataQuebrada quebrar(char data[]);
 
@@ -200,8 +201,6 @@ int q1(char data[])
 }
 
 
-
-
 /*
  Q2 = diferença entre duas datas
  @objetivo
@@ -216,11 +215,30 @@ int q1(char data[])
     4 -> datainicial > datafinal
     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
+
+
+/*
+  usar uma string datainicial, uma string datafinal 
+
+  typedef struct Qtd
+  {
+    int qtdDias;
+    int qtdMeses;
+    int qtdAnos;
+    int retorno;
+  } DiasMesesAnos;
+
+  dividir e validar a data inicial
+  dividir e validar a data final
+*/
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
 
     //calcule os dados e armazene nas três variáveis a seguir
     DiasMesesAnos dma;
+    DataQuebrada inicial = quebrar(datainicial);
+    DataQuebrada final = quebrar(datafinal);
+    int meses[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     if (q1(datainicial) == 0){
       dma.retorno = 2;
@@ -231,15 +249,57 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     }else{
       //verifique se a data final não é menor que a data inicial
       
+      if (inicial.iAno > final.iAno) {
+          dma.retorno = 4;
+          return dma;
+      }
+      if (inicial.iAno == final.iAno && inicial.iMes > final.iMes) {
+          dma.retorno = 4;
+          return dma;
+      }
+      if (inicial.iAno == final.iAno && inicial.iMes == final.iMes && inicial.iDia > final.iDia) {
+          dma.retorno = 4;
+          return dma;
+      }
+
+      dma.qtdAnos = final.iAno - inicial.iAno;
+      dma.qtdMeses = final.iMes - inicial.iMes;
+      dma.qtdDias = final.iDia - inicial.iDia;
+
+      if(dma.qtdDias < 0){
+        dma.qtdMeses--;
+        
+        int mes_ant = 0;
+        mes_ant = final.iMes - 1;
+        int anoA = final.iAno;
+
+        if (mes_ant == 0) {  
+            mes_ant = 12;  
+            anoA--;           
+        }
+        if (mes_ant == 2) { 
+            if (ehBissexto(anoA)) {
+                dma.qtdDias += 29;
+            } else {
+                dma.qtdDias += 28;
+            }
+        }
+        else{
+          dma.qtdDias += meses[mes_ant - 1];
+        }
+
+      }
+
+      if (dma.qtdMeses < 0) {
+          dma.qtdMeses += 12;
+          dma.qtdAnos--;
+      }
       //calcule a distancia entre as datas
-
-
       //se tudo der certo
       dma.retorno = 1;
       return dma;
       
     }
-    
 }
 
 /*
@@ -259,10 +319,35 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
   strcpy(str, "Renato Lima Novais");
   printf("%d\n", q3(str, 'a', 0) == 3);
  */
+
+ /*
+  caseSensitive = 1 -> diferenciar maiusculo e minusculo
+  caseSensitive != 1 -> nao diferenciar maiusculo e minusculo
+ */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
-    
+    int qtdOcorrencias = 0;
+
+    if(isCaseSensitive == 1){
+      for(int i = 0; texto[i] != '\0'; i++){
+        if(texto[i] == c){
+          qtdOcorrencias++;
+        }
+      }
+    }
+    else{
+      for(int i = 0; texto[i] != '\0'; i++){
+        if(texto[i] == c){
+          qtdOcorrencias++;
+        }
+        else if((c >= 'A' && c <= 'Z') && (texto[i] == c + 32)){
+          qtdOcorrencias++;
+        }
+        else if((texto[i] >= 'A' && texto[i] <= 'Z') && (c == texto[i] + 32)){
+          qtdOcorrencias++;
+        }
+      }
+    }
     return qtdOcorrencias;
 }
 
@@ -285,8 +370,28 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+    int tam = strlen(strBusca);
+    int cont = 0;
 
+    for(int i = 0; strTexto[i] != '\0'; i++){
+
+      int igual = 1;
+      
+      if(strTexto[i] == strBusca[0]){
+        for(int j = 1; strBusca[j] != '\0'; j++){
+          if(strTexto[i + j] != strBusca[j]){
+            break;
+          }
+          else if(strBusca[j + 1] == '\0'){
+            posicoes[cont] = i;
+            posicoes[cont + 1] = (i + (tam - 1));
+            cont = cont + 2;
+            qtdOcorrencias++;
+          }
+        }
+      }
+    }
     return qtdOcorrencias;
 }
 
