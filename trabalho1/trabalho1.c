@@ -26,6 +26,8 @@
 #include <string.h>
 
 DataQuebrada quebrar(char data[]);
+void tratarString(char *texto);
+int ehBissexto(int ano);
 
 /*
 ## função utilizada para testes  ##
@@ -371,29 +373,29 @@ int q3(char *texto, char c, int isCaseSensitive)
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
     int qtdOcorrencias = 0;
-    int tam = strlen(strBusca);
-    int cont = 0;
-
-    for(int i = 0; strTexto[i] != '\0'; i++){
-
-      int igual = 1;
-      
-      if(strTexto[i] == strBusca[0]){
-        for(int j = 1; strBusca[j] != '\0'; j++){
-          if(strTexto[i + j] != strBusca[j]){
-            break;
-          }
-          else if(strBusca[j + 1] == '\0'){
-            posicoes[cont] = i;
-            posicoes[cont + 1] = (i + (tam - 1));
-            cont = cont + 2;
-            qtdOcorrencias++;
-          }
+    int i, j, k, tam;
+    tratarString(strTexto);
+    tratarString(strBusca);
+    for (tam = 0; strBusca[tam]; tam++);
+    for (i = 0, k = 0; strTexto[i] != '\0'; i++) {
+        for (j = 0; strBusca[j] != '\0'; j++) {
+            if (strTexto[i + j] != strBusca[j]) {
+                break; 
+            }
         }
-      }
+
+        if (tam == j) {
+            posicoes[k++] = i + 1;
+            posicoes[k++] = i + tam;
+            qtdOcorrencias++;
+            i++;
+        }
     }
     return qtdOcorrencias;
 }
+
+
+
 
 /*
  Q5 = inverte número
@@ -407,6 +409,14 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
+    int inv = 0;
+
+    while(num > 0){
+      int resto = num % 10;
+      inv = inv * 10 + resto;
+      num = num / 10;
+    }
+    num = inv;
 
     return num;
 }
@@ -423,9 +433,34 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+    int qtdOcorrencias = 0;
+    int i, j;
+    int num_base[20], num_busca[20];
+
+    for (i = 0; numerobase > 0; i++) {
+        num_base[i] = (numerobase % 10);
+        numerobase = numerobase / 10;
+    }
+    int tam_base = i;
+
+    for (i = 0; numerobusca > 0; i++){
+        num_busca[i] = (numerobusca % 10);
+        numerobusca = numerobusca / 10;
+    }
+    int tam_busca = i;
+    for (i = 0; i < tam_base; i++) {
+        for (j = 0; j < tam_busca; j++) {
+            if (num_base[i + j] != num_busca[j])
+                break;
+        }
+        if (tam_busca == j) {
+            qtdOcorrencias++;
+            i = i + tam_busca - 1;
+        }
+    }
     return qtdOcorrencias;
 }
+
 
 /*
  Q7 = jogo busca palavras
@@ -437,12 +472,33 @@ int q6(int numerobase, int numerobusca)
     1 se achou 0 se não achou
  */
 
- int q7(char matriz[8][10], char palavra[5])
- {
-     int achou;
-     return achou;
- }
+int q7(char matriz[8][10], char palavra[5])
+{
+    int achou;
 
+    return achou;
+}
+
+
+ void tratarString(char *texto) {
+    int i, j, tam;
+    char com_acento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù";
+    char sem_acento[] = "AAAAAAAAAAaaaaaaaaaaEEEEEEEEeeeeeeeeIIIIIIIIiiiiiiiiOOOOOOOOOOooooooooooUUUUUUUUuuuuuuuu";
+    for(tam = 0; texto[tam] != '\0'; tam++);
+    for(i = 0; texto[i] != '\0'; i++){
+        for(j = 0; com_acento[j] != '\0'; j++) {
+            if(texto[i] == com_acento[j] && texto[i+1] == com_acento[j+1]) {
+                texto[i] = sem_acento[j];
+                for (int k = i + 1; k < tam - 1; k++) {
+                    texto[k] = texto[k+1];
+                }
+                texto[tam - 1] = '\0';
+                tam--;
+                break;
+            }
+        }
+    }
+}
 
 
 

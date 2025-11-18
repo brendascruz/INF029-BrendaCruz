@@ -50,5 +50,6 @@ int q6(int numerobase, int numerobusca);
 int q7(char matriz[8][10], char palavra[5]);
 DataQuebrada quebrar(char data[]);
 int ehBissexto(int ano);
+void tratarString(char *texto);
 
 #endif  // MAIN_H

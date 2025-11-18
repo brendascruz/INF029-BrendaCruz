@@ -35,17 +35,17 @@ int main()
     //testSomar();
     //testFatorial();
     //testQ1();
-    /*testQ2();
-    testQ3();
-    testQ4();
-    testQ5();
-    testQ6();
-    testQ7(); */
+    //testQ2();
+    //testQ3();
+    //testQ4();
+    //testQ5();
+    //testQ6();
+    //testQ7(); 
 }
 
 void testSomar()
 {
-    printf("%d\n", somar(3, 4) == 7);
+    printf("%d\n", somar(3, 4) == 7); 
     printf("%d\n", somar(-1, -3) == -4);
     printf("%d\n", somar(-6, 6) == 0);
     printf("%d\n", somar(74, 9) == 83);
