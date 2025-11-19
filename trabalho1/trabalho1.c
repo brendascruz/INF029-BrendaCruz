@@ -370,30 +370,33 @@ int q3(char *texto, char c, int isCaseSensitive)
         O retorno da função, n, nesse caso seria 1;
 
  */
+// 
+
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = 0;
-    int i, j, k, tam;
-    tratarString(strTexto);
-    tratarString(strBusca);
-    for (tam = 0; strBusca[tam]; tam++);
-    for (i = 0, k = 0; strTexto[i] != '\0'; i++) {
-        for (j = 0; strBusca[j] != '\0'; j++) {
-            if (strTexto[i + j] != strBusca[j]) {
-                break; 
-            }
-        }
-
-        if (tam == j) {
-            posicoes[k++] = i + 1;
-            posicoes[k++] = i + tam;
-            qtdOcorrencias++;
-            i++;
-        }
+  int qtdOcorrencias = 0;
+  int tamTexto = strlen(strTexto);
+  int tamBusca = strlen(strBusca);
+  for (int i = 0; i <= tamTexto - tamBusca; i++)
+  {
+    int encontrou = 1;
+    for (int j = 0; j < tamBusca; j++)
+    {
+      if (strTexto[i + j] != strBusca[j])
+      {
+        encontrou = 0;
+        break;
+      }
     }
-    return qtdOcorrencias;
+    if (encontrou)
+    {
+      posicoes[2 * qtdOcorrencias] = i + 1;
+      posicoes[2 * qtdOcorrencias + 1] = i + tamBusca;
+      qtdOcorrencias++;
+    }
+  }
+  return qtdOcorrencias;
 }
-
 
 
 
@@ -474,30 +477,104 @@ int q6(int numerobase, int numerobusca)
 
 int q7(char matriz[8][10], char palavra[5])
 {
-    int achou;
+  int tam = 0;
+  tam = strlen(palavra);
 
-    return achou;
-}
+  for (int i = 0; i < 8; i++) {
+      for (int j = 0; j < 10; j++) {
 
+          if (matriz[i][j] == palavra[0]) {
 
- void tratarString(char *texto) {
-    int i, j, tam;
-    char com_acento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù";
-    char sem_acento[] = "AAAAAAAAAAaaaaaaaaaaEEEEEEEEeeeeeeeeIIIIIIIIiiiiiiiiOOOOOOOOOOooooooooooUUUUUUUUuuuuuuuu";
-    for(tam = 0; texto[tam] != '\0'; tam++);
-    for(i = 0; texto[i] != '\0'; i++){
-        for(j = 0; com_acento[j] != '\0'; j++) {
-            if(texto[i] == com_acento[j] && texto[i+1] == com_acento[j+1]) {
-                texto[i] = sem_acento[j];
-                for (int k = i + 1; k < tam - 1; k++) {
-                    texto[k] = texto[k+1];
-                }
-                texto[tam - 1] = '\0';
-                tam--;
-                break;
-            }
-        }
-    }
+              int k;
+
+              for (k = 1; k < tam; k++) {
+                  int col = j + k;
+                  if (col >= 10) 
+                    break;
+                  if (matriz[i][col] != palavra[k]) 
+                    break;
+              }
+              if (k == tam) 
+                return 1;
+
+              for (k = 1; k < tam; k++) {
+                  int col = j - k;
+                  if (col < 0) 
+                    break;
+                  if (matriz[i][col] != palavra[k]) 
+                    break;
+              }
+              if (k == tam) 
+                return 1;
+
+              for (k = 1; k < tam; k++) {
+                  int lin = i + k;
+                  if (lin >= 8) 
+                    break;
+                  if (matriz[lin][j] != palavra[k]) 
+                    break;
+              }
+              if (k == tam) 
+                return 1;
+
+              for (k = 1; k < tam; k++) {
+                  int lin = i - k;
+                  if (lin < 0) 
+                    break;
+                  if (matriz[lin][j] != palavra[k]) 
+                    break;
+              }
+              if (k == tam) 
+                return 1;
+
+              for (k = 1; k < tam; k++) {
+                  int lin = i + k;
+                  int col = j + k;
+                  if (lin >= 8 || col >= 10) 
+                    break;
+                  if (matriz[lin][col] != palavra[k]) 
+                    break;
+              }
+              if (k == tam) 
+                return 1;
+
+              for (k = 1; k < tam; k++) {
+                  int lin = i - k;
+                  int col = j - k;
+                  if (lin < 0 || col < 0) 
+                    break;
+                  if (matriz[lin][col] != palavra[k]) 
+                    break;
+              }
+              if (k == tam) 
+                return 1;
+
+              for (k = 1; k < tam; k++) {
+                  int lin = i + k;
+                  int col = j - k;
+                  if (lin >= 8 || col < 0) 
+                    break;
+                  if (matriz[lin][col] != palavra[k]) 
+                    break;
+              }
+              if (k == tam) 
+                return 1;
+
+              for (k = 1; k < tam; k++) {
+                  int lin = i - k;
+                  int col = j + k;
+                  if (lin < 0 || col >= 10) 
+                    break;
+                  if (matriz[lin][col] != palavra[k]) 
+                    break;
+              }
+              if (k == tam) 
+                return 1;
+          }
+      }
+  }
+
+  return 0;
 }
 
 
