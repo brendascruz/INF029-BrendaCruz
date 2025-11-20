@@ -372,31 +372,32 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 // 
 
+
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-  int qtdOcorrencias = 0;
-  int tamTexto = strlen(strTexto);
-  int tamBusca = strlen(strBusca);
-  for (int i = 0; i <= tamTexto - tamBusca; i++)
-  {
-    int encontrou = 1;
-    for (int j = 0; j < tamBusca; j++)
-    {
-      if (strTexto[i + j] != strBusca[j])
-      {
-        encontrou = 0;
-        break;
-      }
+    int qtdOcorrencias = 0;
+    int i, j, k, tam;
+    tratarString(strTexto);
+    tratarString(strBusca);
+    tam = strlen(strBusca);
+    for (i = 0, k = 0; strTexto[i] != '\0'; i++) {
+        for (j = 0; strBusca[j] != '\0'; j++) {
+            if (strTexto[i + j] != strBusca[j]) {
+                break;
+            }
+        }
+
+        if (tam == j) {
+            posicoes[k++] = i + 1;
+            posicoes[k++] = i + tam;
+            qtdOcorrencias++;
+            i++;
+        }
     }
-    if (encontrou)
-    {
-      posicoes[2 * qtdOcorrencias] = i + 1;
-      posicoes[2 * qtdOcorrencias + 1] = i + tamBusca;
-      qtdOcorrencias++;
-    }
-  }
-  return qtdOcorrencias;
+    return qtdOcorrencias;
 }
+
+
 
 
 
@@ -576,6 +577,27 @@ int q7(char matriz[8][10], char palavra[5])
   }
 
   return 0;
+}
+
+
+void tratarString(char *texto) {
+    int i, j, tam;
+    char com_acento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù";
+    char sem_acento[] = "AAAAAAAAAAaaaaaaaaaaEEEEEEEEeeeeeeeeIIIIIIIIiiiiiiiiOOOOOOOOOOooooooooooUUUUUUUUuuuuuuuu";
+    for(tam = 0; texto[tam] != '\0'; tam++);
+    for(i = 0; texto[i] != '\0'; i++){
+        for(j = 0; com_acento[j] != '\0'; j++) {
+            if(texto[i] == com_acento[j] && texto[i+1] == com_acento[j+1]) {
+                texto[i] = sem_acento[j];
+                for (int k = i + 1; k < tam - 1; k++) {
+                    texto[k] = texto[k+1];
+                }
+                texto[tam - 1] = '\0';
+                tam--;
+                break;
+            }
+        }
+    }
 }
 
 
